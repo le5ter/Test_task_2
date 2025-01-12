@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    build:
+      dockerfile: ./postgres.Dockerfile
+    ports:
+      - "5430:5432"
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+    driver: local
