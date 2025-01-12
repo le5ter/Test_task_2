@@ -14,6 +14,10 @@ class Cart(models.Model):
     def __str__(self):
         return f"Cart for {self.user.username}"
 
+    def get_total_price(self):
+        total = sum(item.get_total_price() for item in self.items.all())
+        return total
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(
@@ -32,6 +36,9 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
+
+    def get_total_price(self):
+        return self.product.price * self.quantity
 
 
 class Order(models.Model):

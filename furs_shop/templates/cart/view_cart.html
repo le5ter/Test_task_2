@@ -1,0 +1,39 @@
+<!-- view_cart.html -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ваша корзина</title>
+</head>
+<body>
+<h1>Ваша корзина</h1>
+
+<div>
+  {% if cart and cart.items.all %}
+  <!-- Список товаров в корзине -->
+  <ul>
+    {% for item in cart.items.all %}
+    <li>
+      <strong>{{ item.product.name }}</strong> - {{ item.quantity }} x {{ item.product.price }} руб.
+    </li>
+    {% endfor %}
+  </ul>
+
+  <!-- Общая стоимость корзины -->
+  <p><strong>Итого: {{ cart.get_total_price }} руб.</strong></p>
+
+  <!-- Форма для оформления заказа -->
+  <form action="{% url 'checkout' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">Оформить заказ</button>
+  </form>
+  {% else %}
+  <!-- Сообщение, если корзина пуста -->
+  <p>Ваша корзина пуста.</p>
+  {% endif %}
+</div>
+
+</body>
+</html>

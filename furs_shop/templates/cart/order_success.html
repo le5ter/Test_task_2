@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Оформление заказа</title>
+</head>
+<body>
+<h1>Ваш заказ успешно оформлен!</h1>
+<p>Номер заказа: {{ order.id }}</p>
+<p>Спасибо за покупку!</p>
+<a href="{% url 'product_list' %}">На главную</a>
+</body>
+</html>

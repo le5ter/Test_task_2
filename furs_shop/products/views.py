@@ -3,6 +3,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
+from django.shortcuts import render
 
 
 class ProductListView(ListAPIView):
@@ -21,3 +22,8 @@ class ProductDetailView(RetrieveAPIView):
 class CategoryListView(ListAPIView):
     queryset = Category.objects.filter(parent=None)
     serializer_class = CategorySerializer
+
+
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'products/product_list.html', {'products': products})

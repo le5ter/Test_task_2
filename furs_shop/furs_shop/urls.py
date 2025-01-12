@@ -17,11 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from products.views import product_list
+from orders.views import add_to_cart, view_cart, checkout
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
+    path('', product_list, name='product_list'),
+    path('add_to_cart/<int:product_id>', add_to_cart, name='add_to_cart'),
+    path('cart', view_cart, name='view_cart'),
+    path('checkout', checkout, name='checkout'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include('products.urls')),
