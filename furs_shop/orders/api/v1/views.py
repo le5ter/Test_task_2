@@ -1,12 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, serializers
+from drf_spectacular.utils import extend_schema
 from orders.models import Cart, CartItem, Order, OrderItem
 from products.models import Product
 from ..serializers import CartSerializer
 
 
 class CartView(APIView):
+    serializer_class = CartSerializer
+
     def get(self, request):
         cart, _ = Cart.objects.get_or_create(user=request.user)
         serializer = CartSerializer(cart)
@@ -39,7 +42,15 @@ class CartView(APIView):
         return Response({'message': 'Cart item removed'})
 
 
+class OrderResponseSerializer(serializers.Serializer):
+    message = serializers.CharField()
+
+
 class OrderCreateView(APIView):
+    @extend_schema(
+        request=None,
+        responses={201: OrderResponseSerializer}
+    )
     def post(self, request):
         cart = Cart.objects.get(user=request.user)
         if not cart.items.exists():

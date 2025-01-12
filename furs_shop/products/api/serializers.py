@@ -9,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name', 'description', 'parent', 'subcategories']
 
-    def get_subcategories(self, obj):
+    def get_subcategories(self, obj) -> list[dict]:
         return CategorySerializer(obj.subcategories.all(), many=True).data
 
 
