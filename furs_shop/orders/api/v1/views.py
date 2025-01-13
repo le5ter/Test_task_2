@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AnonymousUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, serializers
@@ -11,6 +12,8 @@ class CartView(APIView):
     serializer_class = CartSerializer
 
     def get(self, request):
+        if isinstance(request.user, AnonymousUser):
+            return Response({'message': 'User not provided'}, status=status.HTTP_401_UNAUTHORIZED)
         cart, _ = Cart.objects.get_or_create(user=request.user)
         serializer = CartSerializer(cart)
         return Response(serializer.data)
