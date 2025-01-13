@@ -12,6 +12,21 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
+  django:
+    build:
+      context: .
+      dockerfile: ./django.Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - DEBUG=0
+    env_file:
+      - .env
+
 volumes:
   db_data:
     driver: local
